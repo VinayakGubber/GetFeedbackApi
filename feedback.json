@@ -12,16 +12,16 @@
     "course": "Databases",
     "message": "Needs to participate more in class.",
     "rating": 2
-  }
+  },
   {
-    "id": 2,
+    "id": 3,
     "email": "dummy@dummy.com",
     "course": "Databases",
     "message": "Needs to participate more in class.",
     "rating": 2
-  }
+  },
   {
-    "id": 2,
+    "id": 4,
     "email": "dummy@dummy.com",
     "course": "Databases",
     "message": "Needs to participate more in class.",
