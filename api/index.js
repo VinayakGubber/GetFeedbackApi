@@ -1,41 +1,44 @@
-import feedbacks from "../../feedback.json";
+const express = require("express");Add commentMore actions
+const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 
-export default function handler(req, res) {
-  const { pathname, searchParams } = new URL(
-    req.url,
-    `http://${req.headers.host}`
-  );
-  const path = pathname.replace("/api", "");
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-  // Root: /api
-  if (path === "" || path === "/") {
-    return res.status(200).send(`
-      <div style="font-family: sans-serif; line-height: 1.6; padding: 20px;">
-        <h1>📊 Feedback API</h1>
-        <p>This API powers the <a href="https://github.com/VinayakGubber/StudentFeedbackPortal" target="_blank">Student Feedback Portal</a>.</p>
-        <ul>
-          <li><code>/api/feedbacks</code> → Get all feedbacks</li>
-          <li><code>/api/feedbacks?email=student@example.com</code> → Filter feedbacks by email</li>
-        </ul>
-        <p>Source: <a href="https://github.com/VinayakGubber/GetFeedbackApi" target="_blank">GitHub</a></p>
-      </div>
+app.use(cors());
+
+app.get("/", (req, res) => {
+  res.send(`
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; padding: 20px;">
+      <h1 style="color: #4CAF50;"> Welcome to <em>FeedbackAPI</em>!</h1>
+      <p>Use the following endpoints to access teacher-given feedback:</p>
+      <ul>
+        <li><code>/random</code> | Get a random feedback entry</li>
+         <p><strong>Click the link :- </strong> <a href="https://your-vercel-deployment-url.vercel.app/random" target="_blank">Get a random feedback</a></p>
+        <li><code>/feedbacks</code> | View all feedback</li>
+         <p><strong>Click the link :- </strong> <a href="https://your-vercel-deployment-url.vercel.app/feedbacks" target="_blank">View all feedback</a></p>
+        <li><code>/feedbacks?email=student@example.com</code> | Filter by student email</li>
+      </ul>
+      <p><strong>Source Code:</strong> <a href="https://github.com/VinayakGubber/GetFeedbackApi" target="_blank">GitHub Repository</a></p>
+    </div>
     `);
+});
+
+
+app.get("/feedbacks", (req, res) => {
+  const feedbackPath = path.resolve(__dirname, "../feedback.json");
+  const feedbacks = JSON.parse(fs.readFileSync(feedbackPath, "utf8"));
+  const { email } = req.query;
+
+  if (email) {
+    const filtered = feedbacks.filter(
+      (fb) => fb.email.toLowerCase() === email.toLowerCase()
+    );
+    return res.json(filtered);
   }
 
-  // /api/feedbacks (with optional ?email=)
-  if (path === "/feedbacks") {
-    const email = searchParams.get("email");
+  res.json(feedbacks);
+});
 
-    if (email) {
-      const filtered = feedbacks.filter(
-        (fb) => fb.email.toLowerCase() === email.toLowerCase()
-      );
-      return res.status(200).json(filtered);
-    }
-
-    return res.status(200).json(feedbacks);
-  }
-
-  // Fallback
-  return res.status(404).json({ error: "Invalid endpoint." });
-}
+module.exports = app;
