@@ -1,4 +1,4 @@
-const express = require("express");Add commentMore actions
+const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
@@ -24,7 +24,6 @@ app.get("/", (req, res) => {
     </div>
     `);
 });
-
 
 app.get("/feedbacks", (req, res) => {
   const feedbackPath = path.resolve(__dirname, "../feedback.json");
