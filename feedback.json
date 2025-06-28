@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "email": "test@test.com",
+    "course": "Algorithms",
+    "message": "Great improvement on last assignment!",
+    "rating": 4
+  },
+  {
+    "id": 2,
+    "email": "test@test.com",
+    "course": "Databases",
+    "message": "Needs to participate more in class.",
+    "rating": 2
+  }
+]
